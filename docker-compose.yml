@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  terraform:
+    build: terraform
+    volumes:
+      - ./terraform:/terraform
+    working_dir: /terraform
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - TF_VAR_public_key=${PUBLIC_KEY}
+    # Override entrypoint
+    entrypoint:
+      - terraform
+    # Override command
+    command:
+      - --help
+  ansible-playbook:
+    build: ansible
+    volumes:
+      - ./ansible:/ansible
+    working_dir: /ansible
+    environment:
+      - PRIVATE_KEY
+    # Override entrypoint
+    entrypoint:
+      - ansible-playbook
+    # Override command
+    command:
+      - --help
