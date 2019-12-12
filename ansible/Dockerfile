@@ -12,3 +12,6 @@ FROM python:3.8.0-alpine3.10
 COPY --from=install /root/.local /root/.local
 
 ENV PATH=/root/.local/bin:$PATH
+
+COPY requirements.yml .
+RUN ansible-galaxy install -r requirements.yml
