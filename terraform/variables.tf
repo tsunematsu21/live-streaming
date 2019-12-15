@@ -10,6 +10,12 @@ variable "public_key" {
   default     = null
 }
 
+variable "public_key_file" {
+  type        = string
+  description = "Public key file to import for the key pair used by EC2 instance"
+  default     = null
+}
+
 variable "cidr" {
   type        = string
   description = "The CIDR block for the VPC"

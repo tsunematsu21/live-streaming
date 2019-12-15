@@ -11,7 +11,7 @@ data "aws_availability_zones" "available" {}
 
 resource "aws_key_pair" "key_pair" {
   key_name   = "${var.project_name}-key-pair"
-  public_key = var.public_key
+  public_key = file(var.public_key_file)
 }
 
 module "vpc" {

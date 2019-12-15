@@ -2,30 +2,38 @@ version: "3.7"
 
 services:
   terraform:
-    build: terraform
+    build:
+      context: ./
+      dockerfile: ./terraform/Dockerfile
     volumes:
       - ./terraform:/terraform
+      - ~/.ssh:/tmp/.ssh
     working_dir: /terraform
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
-      - TF_VAR_public_key=${PUBLIC_KEY}
+      - TF_VAR_public_key_file=${PUBLIC_KEY_FILE:-/root/.ssh/id_rsa.pub}
     # Override entrypoint
     entrypoint:
+      - docker-entrypoint.sh
       - terraform
     # Override command
     command:
       - --help
   ansible-playbook:
-    build: ansible
+    build:
+      context: ./
+      dockerfile: ./ansible/Dockerfile
     volumes:
       - ./ansible:/ansible
+      - ~/.ssh:/tmp/.ssh
     working_dir: /ansible
     environment:
-      - PRIVATE_KEY
+      - ANSIBLE_PRIVATE_KEY_FILE=${PRIVATE_KEY_FILE:-/root/.ssh/id_rsa}
     # Override entrypoint
     entrypoint:
+      - docker-entrypoint.sh
       - ansible-playbook
     # Override command
     command:
