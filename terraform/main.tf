@@ -63,5 +63,7 @@ module "ec2" {
     delete_on_termination = true
   }]
 
-  tags = local.tags
+  tags = merge({
+    Role = "web"
+  }, local.tags)
 }
